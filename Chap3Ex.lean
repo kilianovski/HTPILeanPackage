@@ -154,11 +154,11 @@ theorem Exercise_3_3_13 (U : Type)
   done
 
 
-theorem Exercise_3_3_17 (U : Type) (F G : Set (Set U))
-    (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ⊆ B) :
-    ⋃₀ F ⊆ ⋂₀ G := by
+-- theorem Exercise_3_3_17 (U : Type) (F G : Set (Set U))
+--     (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ⊆ B) :
+--     ⋃₀ F ⊆ ⋂₀ G := by
   
-  done
+--   done
 
 /- Section 3.4 -/
 -- 1.
@@ -373,9 +373,105 @@ theorem Exercise_3_5_24a (U : Type) (A B C : Set U) :
 
 /- Section 3.6 -/
 -- 1.
+
 theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
     ⋃₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B }
-      ⊆ ⋃₀ (F \ 𝒫 B) := sorry
+      ⊆ ⋃₀ (F \ 𝒫 B) := by
+    define
+    fix x : U
+    assume h
+    define
+
+    define at h
+    obtain S hS from h
+    -- obtain
+    have ⟨hS, hxS⟩ := hS
+    define at hS
+    obtain A hA from hS
+    have ⟨hA, hSB⟩ := hA
+
+    apply Exists.intro A
+
+    rw [hSB] at hxS
+    define at hxS
+
+    have hAnPB : ¬ A ∈ 𝒫 B := by
+      define
+      quant_neg
+      push_neg
+      apply Exists.intro x
+      exact hxS
+    
+    apply And.intro
+    define
+
+    show A∈F ∧ ¬A ∈ 𝒫 B from ⟨hA, hAnPB⟩
+
+    exact hxS.left
+
+
+
+-- theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
+--     ⋃₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B }
+--       ⊆ ⋃₀ (F \ 𝒫 B) := by
+    
+--     define
+
+--     fix x : U
+--     assume h
+
+--     define at h
+--     obtain s hs from h
+--     define
+
+--     have ⟨hs, hxs⟩ := hs
+--     define at hs
+--     obtain A ha from hs
+--     rw [ha.right] at hxs
+
+--     define at hxs
+--     have my_set : Set U := { x } -- This should be the way..
+
+--     have hxx : x ∈ my_set := 
+
+--     have hxab : x ∈ A \ B :=
+--       calc x ∈ s
+--         _ = 
+
+
+
+    -- define at hs
+    -- Looks like dead end:
+
+    -- apply Exists.intro s
+
+    -- apply And.intro
+
+    -- . -- Case s ∈ (F \ 𝒫 B)
+    --   have hs := hs.left
+  
+    --   define at hs
+
+    --   obtain A ha from hs
+
+    --   have hsa := ha.right
+
+    --   define
+    --   apply And.intro
+
+    --   . -- Case s ∈ F
+
+      
+
+    --   . -- Case 
+
+
+    -- . -- case x ∈ s
+    --   exact hs.right
+
+
+
+
 
 -- 2.
 theorem Exercise_3_5_9 (U : Type) (A B : Set U)

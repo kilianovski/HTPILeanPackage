@@ -224,3 +224,129 @@ theorem Example_3_5_2
     show x ∈ A \ B ∨ x ∈ C from (hnbc.elim 
     (fun h => Or.inl ⟨ha, h⟩ )
     (fun h => Or.inr h))
+
+
+theorem Example_3_6_1__1_2 (U : Type) (P : Pred U)
+  (h: ∃ (x:U), P x ∧ ∀ (y:U), (P y → y = x)) :
+  ∃ (x:U), ∀ (y:U), (P y ↔ y = x) := by
+  obtain x he from h
+
+  apply Exists.intro x
+
+  fix y
+  
+  apply Iff.intro
+
+  exact he.right y
+
+  assume eq
+
+  rw [eq]
+  exact he.left
+
+
+theorem empty_union {U : Type} (B : Set U) :
+    ∅ ∪ B = B := by
+    apply Set.ext
+    fix x : U
+    apply Iff.intro
+
+    assume h
+    define at h
+
+    by_cases on h
+    . -- x ∈ ∅
+      define at h
+      exact False.elim h
+    . -- x ∈ B
+      exact h
+
+    assume h
+    exact Or.inr h
+
+#check @or_comm
+
+theorem union_comm {U : Type} (X Y : Set U) :
+    X ∪ Y = Y ∪ X := by
+  
+  apply Set.ext
+  fix x : U
+  define : x ∈ X ∪ Y
+  define : x ∈ Y ∪ X
+
+  exact or_comm
+  -- apply or_comm
+  -- done
+
+#check Eq.symm
+
+theorem Example_3_6_2 (U : Type) : 
+  ∃! (A: Set U), ∀ (B : Set U), 
+    A ∪ B = B := by
+  exists_unique
+  . -- Existence
+
+    apply Exists.intro ∅
+    fix B
+    apply empty_union B
+  
+  . -- Uniqueness
+    fix A1; fix A2
+    assume h1; assume h2
+    have u1 := h1 A2
+    have u2 := h2 A1
+
+    show A1 = A2 from
+        calc A1
+        _ = A2 ∪ A1 := u2.symm
+        _ = A1 ∪ A2 := union_comm A2 A1
+        _ = A2 := u1
+
+
+-- theorem Example_3_6_3 (x : ℝ)
+--   (hn : x ≠ 2) : ∃! (y : ℝ), 2*y / (y+1) = x := by
+--     exists_unique
+
+--     . -- Existence
+
+--       have y := x / (2 - x)
+
+--       apply Exists.intro y
+
+--       rw [y = x / (2 - x)]
+--       simp
+--     . -- Uniqueness
+
+variable (α : Type) (P : α → Prop)
+
+example (x : α) (y : α) (h : P y) (he : x = y) : P x := by
+  rw [<- he] at h
+  exact h
+
+
+
+theorem Example_3_6_4 (U : Type) (A B C : Set U)
+    (h1 : ∃ (x : U), x ∈ A ∩ B)
+    (h2 : ∃ (x : U), x ∈ A ∩ C)
+    (h3 : ∃! (x : U), x ∈ A) :
+    ∃ (x : U), x ∈ B ∩ C := by
+    obtain xa ha hu from h3
+    obtain xb hb from h1
+    obtain xc hc from h2
+    
+    have hac := hc.left
+    have hab := hb.left
+
+    have hubc := hu xb xc
+
+    have heq := hubc hab hac
+
+    apply Exists.intro xb
+
+    have h_xb_b := hb.right
+    have h_xc_c := hc.right
+
+    define
+    rw [<- heq] at h_xc_c
+
+    exact ⟨h_xb_b, h_xc_c⟩
