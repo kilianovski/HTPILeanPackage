@@ -154,3 +154,73 @@ theorem Like_Example_3_4_1 (U : Type)
     done
   
   done
+
+variable (α : Type) (p q : α → Prop)
+
+theorem Example_3_4_4 : (∀ x, ¬p x) ↔ (¬∃ x, p x) :=
+  Iff.intro
+  (fun h => by
+    by_contra he
+    
+    obtain a ha from he
+    contradict ha
+    show ¬p a from h a
+    -- contradict 
+    -- done
+  )
+  (fun h => by
+    fix a
+    by_contra hp
+    have hep : (∃ (x: α), p x) := Exists.intro a hp
+    show False from h hep
+    done
+  )
+
+
+example (U : Type) (P Q : Pred U)
+    (h1 : ∀ (x : U), P x ↔ Q x) :
+    (∃ (x : U), P x) ↔ ∃ (x : U), Q x := by
+    apply Iff.intro
+    · -- (→)
+      assume h2 : ∃ (x : U), P x
+      obtain x' hp from h2
+      have hq := (h1 x').ltr hp
+      apply Exists.intro x' hq
+      done
+    · -- (←)
+      assume heq
+      obtain (u : U) (hq : Q u) from heq
+      have h := (h1 u).rtl
+      apply Exists.intro u (h hq)
+      done
+
+
+theorem Example_3_4_5 (U : Type)
+  (A B C : Set U) : A ∩ (B \ C) = (A ∩ B) \C := by
+  apply Set.ext
+  fix x : U
+  show x ∈ A ∩ (B \ C) ↔ x ∈ (A ∩ B) \ C from
+    calc x ∈ A ∩ (B \ C)
+      _ ↔ x ∈ A ∧ (x ∈ B ∧ x ∉ C) := Iff.refl _
+      _ ↔ (x ∈ A ∧ x ∈ B) ∧ x ∉ C := and_assoc.symm
+      _ ↔ x ∈ (A ∩ B) \ C := Iff.refl _
+  done
+
+
+theorem Example_3_5_2
+    (U : Type) (A B C : Set U) :
+    A \ (B \ C) ⊆ (A \ B) ∪ C := by
+
+    define
+    fix x : U
+    assume h1
+    define
+    define at h1
+
+    have ⟨ha, hnbc⟩ := h1
+    define at hnbc
+    demorgan at hnbc
+
+    show x ∈ A \ B ∨ x ∈ C from (hnbc.elim 
+    (fun h => Or.inl ⟨ha, h⟩ )
+    (fun h => Or.inr h))
