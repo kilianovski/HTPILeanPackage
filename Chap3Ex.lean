@@ -477,20 +477,185 @@ theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
 theorem Exercise_3_5_9 (U : Type) (A B : Set U)
     (h1 : 𝒫 (A ∪ B) = 𝒫 A ∪ 𝒫 B) : A ⊆ B ∨ B ⊆ A := by
   --Hint:  Start like this:
-  have h2 : A ∪ B ∈ 𝒫 (A ∪ B) := sorry
-  done
+  have h2 : A ∪ B ∈ 𝒫 (A ∪ B) := by
+    define
 
--- 3.
+    fix a
+    exact fun x => x
+  
+  
+
+  rw [h1] at h2
+  define at h2
+
+  by_cases on h2
+  . -- A ∪ B ∈ 𝒫 A
+    define at h2
+    apply Or.inr
+    have g : B ⊆ A := fun x => fun hx => h2 (Or.inr hx)
+    exact g
+
+  . -- A ∪ B ∈ 𝒫 B
+    define at h2
+    apply Or.inl
+    show A ⊆ B from fun x => fun hx => h2 (Or.inl hx)
+
+
+
+
+def even_numbers : Set ℕ := {x | x % 2 = 0}
+#check even_numbers
+
+def all_numbers : Set ℕ := {x | True}
+
+theorem univ_contains_x {U : Type} {x : U} : x ∈ {y | True} := by
+  define
+  trivial
+
+
+#check Set.ext
+
+theorem univ_union {U : Type} (B : Set U) :
+    {x|True} ∪ B = {x|True} := by
+    apply Set.ext
+    fix x : U
+    apply Iff.intro
+    assume h
+    define
+    trivial
+
+    assume h
+    define
+    apply Or.inl
+    define
+    trivial
+
+
+theorem union_comm {U : Type} (X Y : Set U) :
+    X ∪ Y = Y ∪ X := by
+  
+  apply Set.ext
+  fix x : U
+  define : x ∈ X ∪ Y
+  define : x ∈ Y ∪ X
+
+  exact or_comm
+
+-- -- 3.
 theorem Exercise_3_6_6b (U : Type) :
-    ∃! (A : Set U), ∀ (B : Set U), A ∪ B = A := sorry
+    ∃! (A : Set U), ∀ (B : Set U), A ∪ B = A := by
 
--- 4.
-theorem Exercise_3_6_7b (U : Type) :
-    ∃! (A : Set U), ∀ (B : Set U), A ∩ B = A := sorry
+    have univ : Set U := {x | True}
+    exists_unique
+
+    . -- Existence
+      apply Exists.intro {x | True}
+      fix B
+
+      apply univ_union B
+
+
+
+    
+    . -- Uniqueness
+      fix A1
+      fix A2
+      assume h1
+      assume h2
+
+      have ha1 := h1 A2
+      have ha2 := h2 A1
+      rw [union_comm] at ha2
+
+
+      show A1 = A2 from
+        calc A1
+            _ = A1 ∪ A2 := ha1.symm
+            _ = A2 := ha2
+        
+
+
+-- -- 4.
+-- theorem Exercise_3_6_7b (U : Type) :
+--     ∃! (A : Set U), ∀ (B : Set U), A ∩ B = A := sorry
+
+#check Set.inter_comm
+#check Iff.intro
+#check Set.ext
+
+
+theorem self_inter {U : Type} {A : Set U} : A ∩ A = A := by
+  apply Set.ext
+  fix x
+  apply Iff.intro
+  assume h
+  exact h.left
+  assume h
+  exact ⟨h, h⟩
 
 -- 5.
 theorem Exercise_3_6_8a (U : Type) : ∀ (A : Set U),
-    ∃! (B : Set U), ∀ (C : Set U), C \ A = C ∩ B := sorry
+    ∃! (B : Set U), ∀ (C : Set U), C \ A = C ∩ B := by
+    fix A
+    exists_unique
+
+    . -- Existence
+      apply Exists.intro {x | ¬x ∈ A}
+      fix C
+      apply Set.ext
+      fix x
+
+      apply Iff.intro
+      . -- x ∈ C \ A → x ∈ C ∩ {x : U | ¬x ∈ A}
+        assume h
+        define
+        apply And.intro
+        exact h.left
+        define
+        exact h.right
+
+      . -- x ∈ C ∩ {x : U | ¬x ∈ A} → x ∈ C \ A
+        assume h
+        define at  h
+        exact h
+
+    . -- Uniqueness
+      fix M; fix N
+      assume h1
+      assume h2
+
+      have hnm := h1 N
+      have hmn := h2 M
+
+      have hm := h1 M
+      have hn := h2 N
+
+      rw [self_inter] at hm
+      rw [self_inter] at hn
+
+      rw [hm] at hmn
+      rw [hn] at hnm
+      
+      show M = N from
+        calc M
+          _ = M ∩ N := hmn
+          _ = N ∩ M := Set.inter_comm M N
+          _ = N := hnm.symm
+
+
+      -- have hm := by
+      --   calc M ∩ M 
+      --     _ = M \ A := hm.symm
+
+      
+      -- have hb12 : B1 \ A = B2 \ A := by
+      --   calc B1 \ A 
+      --     _ = B1 ∩ B2 := hb2
+      --     _ = B2 ∩ B1 := Set.inter_comm B1 B2
+      --     _ = B2 \ A  := hb1.symm
+
+      -- rw [Iff.intro] at hb12
+
 
 -- 6.
 theorem Exercise_3_6_10 (U : Type) (A : Set U)
@@ -499,9 +664,46 @@ theorem Exercise_3_6_10 (U : Type) (A : Set U)
   --Hint:  Start like this:
   set F0 : Set (Set U) := { X : Set U | X ⊆ A ∧ ∃! (x : U), x ∈ X }
   --Now F0 is in the tactic state, with the definition above
-  have h2 : ⋃₀ F0 = A := sorry
-  
-  done
+  have h2 : ⋃₀ F0 = A := by
+    apply Set.ext
+    fix x
+    apply Iff.intro
+    . -- x ∈ ⋃₀ F0 → x ∈ A
+
+      assume h
+      define at h
+      obtain S hS from h
+      have ⟨hS, hx⟩ := hS
+      define at hS
+      have ⟨hS, hxu⟩ := hS
+      define at hS
+
+      show x∈A from hS hx
+      -- obtain x2 hx2 hux2 from hxu
+      -- have hx_eq_x2 := hux2 x x2 hx hx2
+      -- rw [<- hx_eq_x2] at hx2
+
+    . -- x ∈ A → x ∈ ⋃₀ F0
+      assume h
+      define
+      apply Exists.intro {x}
+      apply And.intro
+      define
+      apply And.intro
+      define
+      fix x2
+      
+      assume h2
+      define at h2
+      rw [h2]
+      show x ∈ A from h
+      simp
+      simp
+
+
+    
+  --   F0.
+
 
 /- Section 3.7 -/
 -- 1.

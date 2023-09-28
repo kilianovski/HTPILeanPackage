@@ -350,3 +350,8 @@ theorem Example_3_6_4 (U : Type) (A B C : Set U)
     rw [<- heq] at h_xc_c
 
     exact ⟨h_xb_b, h_xc_c⟩
+
+theorem Theorem_3_3_7 :
+    ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
+  
+  done
