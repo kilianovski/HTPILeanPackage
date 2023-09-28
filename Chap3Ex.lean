@@ -7,26 +7,37 @@ set_option linter.unusedVariables false
 -- 1.
 theorem Exercise_3_2_1a (P Q R : Prop)
     (h1 : P → Q) (h2 : Q → R) : P → R := by
-  
+  assume hp
+  apply h2
+  apply h1
+  show P from hp
   done
 
 -- 2.
 theorem Exercise_3_2_1b (P Q R : Prop)
     (h1 : ¬R → (P → ¬Q)) : P → (Q → R) := by
-  
-  done
+  assume hp
+  assume hq
+  contradict hq with hnr
+  show ¬Q from h1 hnr hp
 
 -- 3.
 theorem Exercise_3_2_2a (P Q R : Prop)
     (h1 : P → Q) (h2 : R → ¬Q) : P → ¬R := by
   
+  assume hp
+  by_contra hr
+  show False from absurd (h1 hp) (h2 hr) 
   done
 
 -- 4.
 theorem Exercise_3_2_2b (P Q : Prop)
     (h1 : P) : Q → ¬(Q → ¬P) := by
-  
+  assume hq
+  by_contra h
+  show False from absurd h1 (h hq)
   done
+
 
 /- Section 3.3 -/
 -- 1.
@@ -34,31 +45,100 @@ theorem Exercise_3_3_1
     (U : Type) (P Q : Pred U) (h1 : ∃ (x : U), P x → Q x) :
     (∀ (x : U), P x) → ∃ (x : U), Q x := by
   
+  assume h
+  obtain a ha from h1
+  have hq := ha (h a)
+  apply Exists.intro a
+  show Q a from hq
   done
 
 -- 2.
 theorem Exercise_3_3_8 (U : Type) (F : Set (Set U)) (A : Set U)
     (h1 : A ∈ F) : A ⊆ ⋃₀ F := by
-  
-  done
-
+    define
+    fix y : U
+    assume ha : y ∈ A
+    define
+    apply Exists.intro A
+    show A ∈ F ∧ y ∈ A from ⟨h1, ha⟩
 -- 3.
 theorem Exercise_3_3_9 (U : Type) (F : Set (Set U)) (A : Set U)
     (h1 : A ∈ F) : ⋂₀ F ⊆ A := by
   
-  done
+  define
+  fix y : U
+  assume hf
+  define at hf
+  have ha : A ∈ F → y ∈ A := hf A
+
+  have hya := ha h1
+  show y ∈ A from hya
+
 
 -- 4.
 theorem Exercise_3_3_10 (U : Type) (B : Set U) (F : Set (Set U))
     (h1 : ∀ (A : Set U), A ∈ F → B ⊆ A) : B ⊆ ⋂₀ F := by
   
+  define
+
+  fix y : U
+  assume hb
+  define
+  fix X : Set U
+  assume hXF
+  have h2 := h1 X hXF
+  define at h2
+
+  have hx : y ∈ X := h2 hb
+  show y ∈ X from hx
+
+
+theorem Exercise_3_3_12 (U : Type)
+    (F G : Set (Set U)) : F ⊆ G → ⋃₀ F ⊆ ⋃₀ G := by
+  assume h
+  define
+  fix x
+  assume hxf
+  define
+  define at hxf
+  define at h
+  obtain (s : Set U) (⟨h2, h3⟩) from hxf
+  have hsg : (s ∈ G) := h h2
+
+  apply Exists.intro s
+  show s ∈ G ∧ x ∈ s from ⟨hsg, h3⟩
   done
 
 -- 5.
 theorem Exercise_3_3_13 (U : Type)
     (F G : Set (Set U)) : F ⊆ G → ⋂₀ G ⊆ ⋂₀ F := by
   
+  assume h
+  define
+  fix x
+  assume hxG
+  define
+  fix s
+  assume hsF
+  define at hxG
+  define at h
+
+  have hxG2 : s ∈ G := h hsF
+  have q := hxG s hxG2
+  show x ∈ s from q
   done
+
+
+theorem Exercise_3_3_17 (U : Type) (F G : Set (Set U)) 
+  (hf : ∃ f : Set U, f ∈ F)
+  (hg : ∃ g : Set U, g ∈ G)
+  (hs : ∀ (a : Set U), a ∈ F → (∀ (t : Set U),t ∈ G → a ⊆ t))
+  : ⋃₀ F ⊆ ⋂₀ G := by
+  define
+  fix y
+  assume h1
+  define
+  sorry
 
 /- Section 3.4 -/
 -- 1.
