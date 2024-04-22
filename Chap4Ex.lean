@@ -1,16 +1,192 @@
 import Chap4
+-- import Mathlib
 namespace HTPI.Exercises
 set_option pp.funBinderTypes true
 set_option linter.unusedVariables false
 
+
+
+
+
+
+
 /- Section 4.2 -/
+
+theorem Theorem_4_2_5_4 {A B C D : Type}
+    (R : Set (A × B)) (S : Set (B × C)) (T : Set (C × D)) :
+    comp T (comp S R) = comp (comp T S) R := by
+    apply Set.ext
+    fix (a, d) : A × D
+
+    apply Iff.intro
+    · -- (→)
+
+        assume h -- (a, d) ∈ comp T (comp S R)
+        define at h -- ∃ c, (a,c) ∈ comp S R ∧ (c,d) ∈ T
+        obtain c hc from h
+        have ⟨hsr, ht⟩ := hc
+        define at hsr
+        obtain b hb from hsr
+
+        define
+        apply Exists.intro b
+
+        apply And.intro hb.left
+        define
+        apply Exists.intro c
+        apply And.intro hb.right
+        exact ht
+
+    -- rfl
+    sorry
+
+#check inv
+
+
+theorem Theorem_4_2_5_5 {A B C : Type}
+    (R : Set (A × B)) (S : Set (B × C)) :
+    inv (comp S R) = comp (inv R) (inv S) := by
+
+    apply Set.ext
+    fix (c, a) : (C × A)
+
+    apply Iff.intro
+    · -- (→)
+        assume h1
+
+        define at h1
+        obtain b (⟨hbR,hbS⟩) from h1
+
+        -- rw [inv, inv]
+
+        define
+
+        apply Exists.intro b
+        rewrite [inv_def, inv_def]
+        show (b, c) ∈ S ∧ (a, b) ∈ R from ⟨hbS, hbR⟩
+    . -- (<-)
+        assume h1
+        define
+        define at h1
+        obtain b (⟨hbS,hbR⟩) from h1
+        apply Exists.intro b
+        rw [inv_def] at hbS
+        rw [inv_def] at hbR
+        show (a, b) ∈ R ∧ (b, c) ∈ S from ⟨hbR, hbS⟩
+    done
+
+
+theorem their_Theorem_4_2_5_5 {A B C : Type}
+    (R : Set (A × B)) (S : Set (B × C)) :
+    inv (comp S R) = comp (inv R) (inv S) := by
+
+    apply Set.ext
+    fix (c, a) : (C × A)
+
+    apply Iff.intro
+    · -- (→)
+        assume h1
+        define at h1
+        obtain b h2 from h1
+
+        define
+        apply Exists.intro b
+        apply And.intro
+        . -- (c, b) ∈ inv S
+            define
+            show (b, c) ∈ S from h2.right
+
+        . --
+            define
+            show (a, b) ∈ R from h2.left
+    sorry
+
+
+
+
+
 -- 1.
 theorem Exercise_4_2_9a {A B C : Type} (R : Set (A × B))
-    (S : Set (B × C)) : Dom (comp S R) ⊆ Dom R := sorry
+    (S : Set (B × C)) : Dom (comp S R) ⊆ Dom R := by
+    define
+    fix a
+    assume h -- a ∈ Dom (comp S R)
+    define
+    define at h
+    obtain c hc from h
+    define at hc
+    obtain b hb from hc
+    apply Exists.intro b
+    show (a, b) ∈ R from hb.left
+
+
+lemma empty_contains_something {A : Type} (h: ∃ x : A, x ∈ ∅) : False := by
+    obtain x hx from h
+    define at hx
+    exact hx
+
+
+-- theorem Exercise_4_2_9a_my {A B C : Type} (R : Set (A × B))
+--     (S : Set (B × C)) : Dom (comp S R) ≠ Dom R := by
+--     define
+--     by_contra h
+
+
+--     have myS : Set (Nat × Nat) := ∅
+--     have myR : Set (Nat × Nat) := {(1,2)}
+
+
+--     have x := Dom myR
+--     have c := comp myS myR
+
+
+--     rw [Dom, Dom] at h
+
+
+--     have t := h.left
+
 
 -- 2.
 theorem Exercise_4_2_9b {A B C : Type} (R : Set (A × B))
-    (S : Set (B × C)) : Ran R ⊆ Dom S → Dom (comp S R) = Dom R := sorry
+    (S : Set (B × C)) : Ran R ⊆ Dom S → Dom (comp S R) = Dom R := by
+    assume h
+    define at h
+    apply Set.ext
+    fix a
+    apply Iff.intro
+    . -- -->
+        assume h2
+        define at h2
+        obtain c hc from h2
+        define
+        define at hc
+        obtain b hb from hc
+        apply Exists.intro b
+        show (a,b) ∈ R from hb.left
+
+    . -- <--
+        assume h2
+        define
+        define at h2
+        obtain b hb from h2
+        have hr : b ∈ Ran R := by
+            define
+            apply Exists.intro a
+            exact hb
+
+        have h3 := h hr
+        define at h3
+
+        obtain c hc from h3
+
+        apply Exists.intro c
+        define
+        apply Exists.intro b
+        show (a, b) ∈ R ∧ (b, c) ∈ S from ⟨hb, hc⟩
+
+        -- appl
+
+
 
 -- 3.
 --Fill in the blank to get a correct theorem and then prove the theorem
@@ -20,7 +196,30 @@ theorem Exercise_4_2_9c {A B C : Type} (R : Set (A × B))
 -- 4.
 theorem Exercise_4_2_12a {A B C : Type}
     (R : Set (A × B)) (S T : Set (B × C)) :
-    (comp S R) \ (comp T R) ⊆ comp (S \ T) R := sorry
+    (comp S R) \ (comp T R) ⊆ comp (S \ T) R := by
+    define
+    fix (a, c)
+    assume h
+    define at h
+    define
+    have ⟨h1, h2⟩ := h
+    define at h1
+    obtain b hb from h1
+    apply Exists.intro b
+    apply And.intro hb.left
+    define
+    apply And.intro hb.right
+
+    define at h2
+    quant_neg at h2
+    have h3 := h2 b
+    demorgan at h3
+
+    show ¬(b, c) ∈ T from h3.elim
+        (fun h : ¬(a,b) ∈ R => absurd hb.left h)
+        (fun h : ¬(b,c) ∈ T  => h)
+
+
 
 -- 5.
 --You won't be able to complete this proof

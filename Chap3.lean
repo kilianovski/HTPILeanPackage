@@ -351,7 +351,20 @@ theorem Example_3_6_4 (U : Type) (A B C : Set U)
 
     exact ⟨h_xb_b, h_xc_c⟩
 
+
+
+
 theorem Theorem_3_3_7 :
     ∀ (a b c : Int), a ∣ b → b ∣ c → a ∣ c := by
-  
-  done
+    fix a; fix b;  fix c;
+    assume ha
+    assume hb
+    define
+
+    obtain i hi from hb
+    obtain j hj from ha
+
+    rw [hj] at hi
+    apply Exists.intro (j*i)
+    rw [mul_assoc] at hi
+    exact hi

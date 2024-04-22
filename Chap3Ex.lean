@@ -20,7 +20,7 @@ theorem dne {p : Prop} (h : ¬¬p) : p :=
     (fun h1 : ¬p => absurd h1 h)
 
 theorem exists_neg : (¬ ∃ x, p x) → (∀ x, ¬ p x) := fun h : ( (∃ x, p x) → False ) =>
-  fun x => byContradiction (fun hnnpx : ¬¬(p x) => 
+  fun x => byContradiction (fun hnnpx : ¬¬(p x) =>
     have hpx : p x := dne hnnpx
     have he : (∃ x, p x) := Exists.intro x hpx
     show False from (h he)
@@ -49,10 +49,10 @@ theorem Exercise_3_2_1b (P Q R : Prop)
 -- 3.
 theorem Exercise_3_2_2a (P Q R : Prop)
     (h1 : P → Q) (h2 : R → ¬Q) : P → ¬R := by
-  
+
   assume hp
   by_contra hr
-  show False from absurd (h1 hp) (h2 hr) 
+  show False from absurd (h1 hp) (h2 hr)
   done
 
 -- 4.
@@ -69,7 +69,7 @@ theorem Exercise_3_2_2b (P Q : Prop)
 theorem Exercise_3_3_1
     (U : Type) (P Q : Pred U) (h1 : ∃ (x : U), P x → Q x) :
     (∀ (x : U), P x) → ∃ (x : U), Q x := by
-  
+
   assume h
   obtain a ha from h1
   have hq := ha (h a)
@@ -89,7 +89,7 @@ theorem Exercise_3_3_8 (U : Type) (F : Set (Set U)) (A : Set U)
 -- 3.
 theorem Exercise_3_3_9 (U : Type) (F : Set (Set U)) (A : Set U)
     (h1 : A ∈ F) : ⋂₀ F ⊆ A := by
-  
+
   define
   fix y : U
   assume hf
@@ -103,7 +103,7 @@ theorem Exercise_3_3_9 (U : Type) (F : Set (Set U)) (A : Set U)
 -- 4.
 theorem Exercise_3_3_10 (U : Type) (B : Set U) (F : Set (Set U))
     (h1 : ∀ (A : Set U), A ∈ F → B ⊆ A) : B ⊆ ⋂₀ F := by
-  
+
   define
 
   fix y : U
@@ -137,7 +137,7 @@ theorem Exercise_3_3_12 (U : Type)
 -- 5.
 theorem Exercise_3_3_13 (U : Type)
     (F G : Set (Set U)) : F ⊆ G → ⋂₀ G ⊆ ⋂₀ F := by
-  
+
   assume h
   define
   fix x
@@ -157,7 +157,7 @@ theorem Exercise_3_3_13 (U : Type)
 -- theorem Exercise_3_3_17 (U : Type) (F G : Set (Set U))
 --     (h1 : ∀ (A : Set U), A ∈ F → ∀ (B : Set U), B ∈ G → A ⊆ B) :
 --     ⋃₀ F ⊆ ⋂₀ G := by
-  
+
 --   done
 
 /- Section 3.4 -/
@@ -208,7 +208,7 @@ theorem Exercise_3_3_16 (U : Type) (B : Set U)
 --     ⋃₀ F ⊆ ⋂₀ G :=
 --     sorry
 
-  
+
   -- done
 
 -- -- 5.
@@ -225,14 +225,14 @@ theorem Exercise_3_3_16 (U : Type) (B : Set U)
 -- -- 7.
 -- theorem Exercise_3_4_18a (U : Type) (F G : Set (Set U)) :
 --     ⋃₀ (F ∩ G) ⊆ (⋃₀ F) ∩ (⋃₀ G) := by
-  
+
 --   done
 
 -- -- 8.
 -- theorem Exercise_3_4_19 (U : Type) (F G : Set (Set U)) :
 --     (⋃₀ F) ∩ (⋃₀ G) ⊆ ⋃₀ (F ∩ G) ↔
 --       ∀ (A B : Set U), A ∈ F → B ∈ G → A ∩ B ⊆ ⋃₀ (F ∩ G) := by
-  
+
 --   done
 
 /- Section 3.5 -/
@@ -291,12 +291,12 @@ theorem Exercise_3_5_8 (U : Type) (A B : Set U) :
 
     by_cases on h1
 
-    . 
+    .
       define at h1
       apply Or.inl
       show x ∈ A from h1 hs
 
-    . 
+    .
       define at h1
       apply Or.inr
       show x ∈ B from h1 hs
@@ -322,7 +322,7 @@ theorem Exercise_3_5_17b (U : Type) (F : Set (Set U)) (B : Set U) :
             )
           (fun h => byCases
             (fun hb : (x ∈ B) => Or.inl hb)
-            (fun hnb : ¬(x ∈ B) => Or.inr (fun A => fun ha => 
+            (fun hnb : ¬(x ∈ B) => Or.inr (fun A => fun ha =>
               have hor := h A ha
               hor.elim (fun hb => absurd hb hnb)
               (fun haa => haa)
@@ -349,7 +349,7 @@ theorem Exercise_3_5_24a (U : Type) (A B C : Set U) :
     define at h
 
     by_cases on h
-    . -- Case s ∈ (A ∪ B) \ C 
+    . -- Case s ∈ (A ∪ B) \ C
       define at h
       have hor : s ∈ A ∨ s ∈ B := h.left
       by_cases on hor
@@ -401,7 +401,7 @@ theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
       push_neg
       apply Exists.intro x
       exact hxS
-    
+
     apply And.intro
     define
 
@@ -414,7 +414,7 @@ theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
 -- theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
 --     ⋃₀ { X : Set U | ∃ (A : Set U), A ∈ F ∧ X = A \ B }
 --       ⊆ ⋃₀ (F \ 𝒫 B) := by
-    
+
 --     define
 
 --     fix x : U
@@ -432,11 +432,11 @@ theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
 --     define at hxs
 --     have my_set : Set U := { x } -- This should be the way..
 
---     have hxx : x ∈ my_set := 
+--     have hxx : x ∈ my_set :=
 
 --     have hxab : x ∈ A \ B :=
 --       calc x ∈ s
---         _ = 
+--         _ =
 
 
 
@@ -449,7 +449,7 @@ theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
 
     -- . -- Case s ∈ (F \ 𝒫 B)
     --   have hs := hs.left
-  
+
     --   define at hs
 
     --   obtain A ha from hs
@@ -461,9 +461,9 @@ theorem Exercise_3_4_15 (U : Type) (B : Set U) (F : Set (Set U)) :
 
     --   . -- Case s ∈ F
 
-      
 
-    --   . -- Case 
+
+    --   . -- Case
 
 
     -- . -- case x ∈ s
@@ -482,8 +482,8 @@ theorem Exercise_3_5_9 (U : Type) (A B : Set U)
 
     fix a
     exact fun x => x
-  
-  
+
+
 
   rw [h1] at h2
   define at h2
@@ -533,7 +533,7 @@ theorem univ_union {U : Type} (B : Set U) :
 
 theorem union_comm {U : Type} (X Y : Set U) :
     X ∪ Y = Y ∪ X := by
-  
+
   apply Set.ext
   fix x : U
   define : x ∈ X ∪ Y
@@ -556,7 +556,7 @@ theorem Exercise_3_6_6b (U : Type) :
 
 
 
-    
+
     . -- Uniqueness
       fix A1
       fix A2
@@ -572,7 +572,7 @@ theorem Exercise_3_6_6b (U : Type) :
         calc A1
             _ = A1 ∪ A2 := ha1.symm
             _ = A2 := ha2
-        
+
 
 
 -- -- 4.
@@ -635,7 +635,7 @@ theorem Exercise_3_6_8a (U : Type) : ∀ (A : Set U),
 
       rw [hm] at hmn
       rw [hn] at hnm
-      
+
       show M = N from
         calc M
           _ = M ∩ N := hmn
@@ -644,12 +644,12 @@ theorem Exercise_3_6_8a (U : Type) : ∀ (A : Set U),
 
 
       -- have hm := by
-      --   calc M ∩ M 
+      --   calc M ∩ M
       --     _ = M \ A := hm.symm
 
-      
+
       -- have hb12 : B1 \ A = B2 \ A := by
-      --   calc B1 \ A 
+      --   calc B1 \ A
       --     _ = B1 ∩ B2 := hb2
       --     _ = B2 ∩ B1 := Set.inter_comm B1 B2
       --     _ = B2 \ A  := hb1.symm
@@ -692,7 +692,7 @@ theorem Exercise_3_6_10 (U : Type) (A : Set U)
       apply And.intro
       define
       fix x2
-      
+
       assume h2
       define at h2
       rw [h2]
@@ -701,14 +701,26 @@ theorem Exercise_3_6_10 (U : Type) (A : Set U)
       simp
 
 
-    
+
   --   F0.
 
 
 /- Section 3.7 -/
 -- 1.
 theorem Exercise_3_3_18a (a b c : Int)
-    (h1 : a ∣ b) (h2 : a ∣ c) : a ∣ (b + c) := sorry
+    (h1 : a ∣ b) (h2 : a ∣ c) : a ∣ (b + c) := by
+    define at h1
+    define at h2
+
+    obtain i hi from h1
+    obtain j hj from h2
+
+    define
+    rw [hi]
+    rw [hj]
+    apply Exists.intro (i + j)
+    rw [<- mul_add]
+
 
 -- 2.
 theorem Exercise_3_4_6 (U : Type) (A B C : Set U) :
@@ -718,14 +730,26 @@ theorem Exercise_3_4_6 (U : Type) (A B C : Set U) :
   show x ∈ A \ (B ∩ C) ↔ x ∈ A \ B ∪ A \ C from
     calc x ∈ A \ (B ∩ C)
       _ ↔ x ∈ A ∧ ¬(x ∈ B ∧ x ∈ C) := sorry
-      _ ↔ x ∈ A ∧ (¬x ∈ B ∨ ¬x ∈ C) := sorry  
+      _ ↔ x ∈ A ∧ (¬x ∈ B ∨ ¬x ∈ C) := sorry
       _ ↔ (x ∈ A ∧ ¬x ∈ B) ∨ (x ∈ A ∧ ¬x ∈ C) := sorry
       _ ↔ x ∈ (A \ B) ∪ (A \ C) := sorry
   done
 
 -- 3.
 theorem Exercise_3_4_10 (x y : Int)
-    (h1 : odd x) (h2 : odd y) : even (x - y) := sorry
+    (h1 : odd x) (h2 : odd y) : even (x - y) := by
+    define
+    define at h1
+    define at h2
+
+    obtain i hi from h1
+    obtain j hj from h2
+    rw [hi]
+    rw [hj]
+    apply Exists.intro (i-j)
+    simp
+
+    rw [<- mul_sub]
 
 -- 4.
 theorem Exercise_3_4_27a :
@@ -734,4 +758,44 @@ theorem Exercise_3_4_27a :
 -- 5.
 theorem Like_Exercise_3_7_5 (U : Type) (F : Set (Set U))
     (h1 : 𝒫 (⋃₀ F) ⊆ ⋃₀ { 𝒫 A | A ∈ F }) :
-    ∃ (A : Set U), A ∈ F ∧ ∀ (B : Set U), B ∈ F → B ⊆ A := sorry
+    ∃ (A : Set U), A ∈ F ∧ ∀ (B : Set U), B ∈ F → B ⊆ A :=
+    by
+
+    -- If [h1]
+    -- Then
+    --     there is such a set in F
+    --     that is a superset of all other sets in F
+
+
+    define at h1
+
+    -- by_contra h2
+
+    -- define at ÷h2
+
+    -- contradict÷
+
+    -- apply Exists.intro (⋃₀ F)
+    apply Exists.intro {x | ∃ A ∈ F, x ∈ A}
+
+
+    apply And.intro
+
+    -- by_contra h2
+
+
+
+
+
+
+
+
+
+
+
+    have ha : a ∈ 𝒫 ⋃₀ F := by
+      simp
+      define
+      fix x
+      assume hx
+      simp
